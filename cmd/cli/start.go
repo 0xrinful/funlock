@@ -9,16 +9,16 @@ import (
 	"github.com/0xrinful/funlock/internal/models"
 )
 
-func (app *application) startSessionCommand() *cli.Command {
+func (app *application) startCommand() *cli.Command {
 	return &cli.Command{
 		Name:      "start",
 		Usage:     "Start a new focus session assigned to a tag",
 		ArgsUsage: "[tag]",
-		Action:    app.startSessionAction,
+		Action:    app.startAction,
 	}
 }
 
-func (app *application) startSessionAction(c *cli.Context) error {
+func (app *application) startAction(c *cli.Context) error {
 	state, err := app.models.State.Get()
 	if err != nil {
 		return fmt.Errorf("failed to retrieve user state: %w", err)

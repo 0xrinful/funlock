@@ -21,8 +21,13 @@ func (app *application) showAction(c *cli.Context) error {
 	mode := c.Args().First()
 	if mode == "" {
 		return cli.Exit(
-			fmt.Sprintf("%sUsage: funlock show [fun|work|state] [count]%s\n", Yellow, Reset),
-			1,
+			fmt.Sprintf(
+				"%sUsage: funlock show [fun|work|state] [count]%s\n%sError: show mode is required.%s",
+				Yellow,
+				Reset,
+				Red,
+				Reset,
+			), 1,
 		)
 	}
 

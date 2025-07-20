@@ -24,6 +24,10 @@ type Models struct {
 		Insert(session *FunSession) error
 		GetLastN(count int) ([]*FunSession, error)
 	}
+
+	LockedApps interface {
+		GetAll() ([]*LockedApp, error)
+	}
 }
 
 func NewModels(db *sql.DB) *Models {
@@ -31,5 +35,6 @@ func NewModels(db *sql.DB) *Models {
 		WorkSessions: WorkSessionModel{DB: db},
 		State:        UserStateModel{DB: db},
 		FunSessions:  FunSessionModel{DB: db},
+		LockedApps:   LockedAppModel{DB: db},
 	}
 }

@@ -7,16 +7,16 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func (app *application) finishSessionCommand() *cli.Command {
+func (app *application) finishCommand() *cli.Command {
 	return &cli.Command{
 		Name:      "finish",
 		Usage:     "Finish the currently running session",
 		ArgsUsage: "",
-		Action:    app.finishSessionAction,
+		Action:    app.finishAction,
 	}
 }
 
-func (app *application) finishSessionAction(c *cli.Context) error {
+func (app *application) finishAction(c *cli.Context) error {
 	state, err := app.models.State.Get()
 	if err != nil {
 		return fmt.Errorf("failed to retrieve user state: %w", err)
@@ -43,7 +43,7 @@ func (app *application) finishSessionAction(c *cli.Context) error {
 		return fmt.Errorf("failed to fetch the finished session: %w", err)
 	}
 	duration := session.EndTime.Sub(session.StartTime)
-	earnedXP := app.calculateXP(duration)
+	earnedXP := app.calculateEarnedXP(duration)
 
 	state.CurrentSessionID = nil
 	state.XpBalance += earnedXP
