@@ -97,7 +97,7 @@ Attempts to launch the app wrapped by `<command>`. If you have enough XP, the ap
 Example:
 
 ```bash
-funlock open spicetify
+funlock open spotify
 ```
 
 ---
@@ -117,7 +117,7 @@ alias <cmd>="funlock open <cmd>"
 Example:
 
 ```bash
-alias spicetify="funlock open spicetify"
+alias spotify="funlock open spotify"
 ```
 
 Add it to your `~/.bashrc` or `~/.zshrc`.
@@ -136,15 +136,16 @@ cp /usr/share/applications/<app>.desktop ~/.local/share/applications/
 
 **Before:**
 ```
-Exec=spicetify
+Exec=spotify
 ```
 
 **After:**
 ```
-Exec=funlock open spicetify
+Exec=funlock open --notify spotify
 ```
-
 Save the file. Now launching the app from the menu will be blocked unless you have XP.
+
+> **Optional:** Add `--notify` if you want to receive a desktop notification when the app is blocked due to insufficient XP.
 
 ---
 

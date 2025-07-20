@@ -23,6 +23,12 @@ func (app *application) openCommand() *cli.Command {
 				Value:   1,
 				Aliases: []string{"i"},
 			},
+			&cli.BoolFlag{
+				Name:    "notify",
+				Usage:   "Show desktop notification when a fun app is denied or started",
+				Aliases: []string{"n"},
+				Value:   false,
+			},
 		},
 		Action: app.openAction,
 	}
@@ -57,6 +63,14 @@ func (app *application) openAction(c *cli.Context) error {
 	}
 
 	if state.XpBalance <= 0 {
+		if c.Bool("notify") {
+			err := exec.Command("notify-send", "Fun app is locked!", "You need more XP to open this app.").
+				Run()
+			if err != nil {
+				fmt.Printf(Red + "failed to send notification" + Reset)
+			}
+		}
+
 		return cli.Exit(
 			fmt.Sprintf(
 				"%sYou have %s%d XP. %sEarn more XP before unlocking an app.%s",
@@ -72,7 +86,7 @@ func (app *application) openAction(c *cli.Context) error {
 		)
 	}
 
-	cmd := exec.Command(strings.Join(args, " "))
+	cmd := exec.Command("sh", "-c", strings.Join(args, " "))
 	start := time.Now()
 
 	if err := cmd.Start(); err != nil {

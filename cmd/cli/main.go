@@ -11,6 +11,7 @@ import (
 	"github.com/urfave/cli/v2"
 
 	"github.com/0xrinful/funlock/internal/models"
+	"github.com/0xrinful/funlock/migrations"
 )
 
 type config struct {
@@ -58,13 +59,7 @@ func main() {
 }
 
 func initDB(db *sql.DB) error {
-	initFilePath := filepath.Join("migrations", "init.sql")
-	data, err := os.ReadFile(initFilePath)
-	if err != nil {
-		return fmt.Errorf("failed to read init.sql: %w", err)
-	}
-
-	_, err = db.Exec(string(data))
+	_, err := db.Exec(migrations.InitSQL)
 	if err != nil {
 		return fmt.Errorf("failed to execute init.sql: %w", err)
 	}
