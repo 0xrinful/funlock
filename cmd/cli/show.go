@@ -22,7 +22,7 @@ func (app *application) showAction(c *cli.Context) error {
 	if mode == "" {
 		return cli.Exit(
 			fmt.Sprintf(
-				"%sUsage: funlock show [fun|work|state] [count]%s\n%sError: show mode is required.%s",
+				"%sUsage: funlock show [fun|work|state|tags|apps] [count]%s\n%sError: show mode is required.%s",
 				Yellow,
 				Reset,
 				Red,
@@ -47,7 +47,6 @@ func (app *application) showAction(c *cli.Context) error {
 			return fmt.Errorf("failed to fetch work sessions: %w", err)
 		}
 		app.printWorkSessionsTable(sessions)
-
 	case "fun":
 		sessions, err := app.models.FunSessions.GetLastN(count)
 		if err != nil {
@@ -74,7 +73,18 @@ func (app *application) showAction(c *cli.Context) error {
 			Reset,
 		)
 		fmt.Printf("%s%s%s\n", Green, line, Reset)
-
+	case "tags":
+		tagSummaries, err := app.models.WorkSessions.GetWorkTimeByTag(count)
+		if err != nil {
+			return fmt.Errorf("failed to fetch tag summaries: %w", err)
+		}
+		app.printWorkTagSummaries(tagSummaries)
+	case "apps":
+		appSummaries, err := app.models.FunSessions.GetFunTimeByApp(count)
+		if err != nil {
+			return fmt.Errorf("failed to fetch app summaries: %w", err)
+		}
+		app.printFunAppSummaries(appSummaries)
 	default:
 		return cli.Exit(fmt.Sprintf("%sUnknown Mode type: %s%s\n", Red, mode, Reset), 1)
 	}

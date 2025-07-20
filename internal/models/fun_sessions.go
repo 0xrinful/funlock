@@ -52,3 +52,40 @@ func (m FunSessionModel) GetLastN(count int) ([]*FunSession, error) {
 
 	return sessions, nil
 }
+
+type FunAppSummary struct {
+	App      string
+	Duration time.Duration
+}
+
+func (m FunSessionModel) GetFunTimeByApp(count int) ([]*FunAppSummary, error) {
+	query := `
+		SELECT app, SUM(strftime('%s', end_time) - strftime('%s', start_time)) AS total_seconds
+		FROM fun_sessions
+		GROUP BY app
+		ORDER BY total_seconds DESC
+		LIMIT ?`
+	rows, err := m.DB.Query(query, count)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	summaries := make([]*FunAppSummary, 0, count)
+
+	for rows.Next() {
+		var summary FunAppSummary
+		var totalSeconds int64
+		if err := rows.Scan(&summary.App, &totalSeconds); err != nil {
+			return nil, err
+		}
+		summary.Duration = time.Duration(totalSeconds) * time.Second
+		summaries = append(summaries, &summary)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return summaries, nil
+}

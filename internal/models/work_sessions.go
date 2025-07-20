@@ -106,3 +106,41 @@ func (m WorkSessionModel) TotalWorkDuration() (time.Duration, error) {
 
 	return time.Duration(*totalSeconds) * time.Second, nil
 }
+
+type WorkTagSummary struct {
+	Tag      string
+	Duration time.Duration
+}
+
+func (m WorkSessionModel) GetWorkTimeByTag(count int) ([]*WorkTagSummary, error) {
+	query := `
+		SELECT tag, SUM(strftime('%s', end_time) - strftime('%s', start_time)) AS total_seconds
+		FROM work_sessions
+		WHERE end_time != '0001-01-01 00:00:00'
+		GROUP BY tag
+		ORDER BY total_seconds DESC
+		LIMIT ?`
+	rows, err := m.DB.Query(query, count)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	summaries := make([]*WorkTagSummary, 0, count)
+
+	for rows.Next() {
+		var summary WorkTagSummary
+		var totalSeconds int64
+		if err := rows.Scan(&summary.Tag, &totalSeconds); err != nil {
+			return nil, err
+		}
+		summary.Duration = time.Duration(totalSeconds) * time.Second
+		summaries = append(summaries, &summary)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return summaries, nil
+}

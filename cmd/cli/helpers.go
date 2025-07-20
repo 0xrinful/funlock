@@ -88,6 +88,42 @@ func (app *application) printFunSessionsTable(sessions []*models.FunSession) {
 	}
 }
 
+func (app *application) printWorkTagSummaries(summaries []*models.WorkTagSummary) {
+	line := strings.Repeat("-", 60)
+	fmt.Println(Green + line + Reset)
+	fmt.Printf(Green+"|  %-20s |  %-20s |  %-7s |\n"+Reset, "Tag", "Total Duration", "XP")
+	fmt.Println(Green + line + Reset)
+
+	for _, s := range summaries {
+		xp := app.calculateEarnedXP(s.Duration)
+		fmt.Printf(
+			pipe+"  "+Yellow+"%-20s"+Reset+" "+pipe+"  "+Yellow+"%-20s"+Reset+" "+pipe+"  "+Red+"%-7d"+Reset+" "+pipe+"\n",
+			s.Tag,
+			durationStr(s.Duration),
+			xp,
+		)
+		fmt.Println(Green + line + Reset)
+	}
+}
+
+func (app *application) printFunAppSummaries(summaries []*models.FunAppSummary) {
+	line := strings.Repeat("-", 60)
+	fmt.Println(Green + line + Reset)
+	fmt.Printf(Green+"|  %-20s |  %-20s |  %-7s |\n"+Reset, "App", "Total Duration", "XP")
+	fmt.Println(Green + line + Reset)
+
+	for _, s := range summaries {
+		xp := app.calculateEarnedXP(s.Duration)
+		fmt.Printf(
+			pipe+"  "+Yellow+"%-20s"+Reset+" "+pipe+"  "+Yellow+"%-20s"+Reset+" "+pipe+"  "+Red+"%-7d"+Reset+" "+pipe+"\n",
+			s.App,
+			durationStr(s.Duration),
+			xp,
+		)
+		fmt.Println(Green + line + Reset)
+	}
+}
+
 func containApp(apps []*models.LockedApp, appName string) bool {
 	for _, app := range apps {
 		if app.Name == appName {

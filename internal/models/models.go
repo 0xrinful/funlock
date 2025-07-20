@@ -15,6 +15,7 @@ type Models struct {
 		FinishSession(id int64) error
 		GetLastN(count int) ([]*WorkSession, error)
 		TotalWorkDuration() (time.Duration, error)
+		GetWorkTimeByTag(count int) ([]*WorkTagSummary, error)
 	}
 	State interface {
 		Get() (*UserState, error)
@@ -23,6 +24,7 @@ type Models struct {
 	FunSessions interface {
 		Insert(session *FunSession) error
 		GetLastN(count int) ([]*FunSession, error)
+		GetFunTimeByApp(count int) ([]*FunAppSummary, error)
 	}
 
 	LockedApps interface {
