@@ -8,6 +8,12 @@ Currently, **Funtool supports Linux only.**
 
 ---
 
+## 📸 Preview
+
+![CLI Demo](assets/preview.png)
+
+---
+
 ## 📦 Installation
 
 Build the CLI binary and place it somewhere in your `$PATH`.
