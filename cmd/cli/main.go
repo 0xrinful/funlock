@@ -32,7 +32,7 @@ func init() {
 func main() {
 	cfg := config{
 		dataDir:  filepath.Join(os.Getenv("XDG_DATA_HOME"), "funlock"),
-		XPFactor: 2,
+		XPFactor: 1,
 	}
 
 	db, err := openDB(cfg.dataDir)

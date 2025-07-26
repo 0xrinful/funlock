@@ -64,7 +64,15 @@ func (app *application) showAction(c *cli.Context) error {
 		}
 		line := strings.Repeat("-", 35)
 		fmt.Printf("%s%s%s\n", Green, line, Reset)
-		fmt.Printf("%s★ Current XP: %s%d XP%s\n", Yellow, Green, state.XpBalance, Reset)
+		fmt.Printf(
+			"%s★ Current XP: %s%d XP%s (%s)%s\n",
+			Yellow,
+			Green,
+			state.XpBalance,
+			Yellow,
+			xpToDuratoinStr(state.XpBalance),
+			Reset,
+		)
 		fmt.Printf(
 			"%s⏱ Total Work Duration: %s%s %s\n",
 			Yellow,

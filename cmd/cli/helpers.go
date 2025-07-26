@@ -44,16 +44,22 @@ func (app *application) calculateSpentXP(duration time.Duration) int64 {
 
 func (app *application) printWorkSessionsTable(sessions []*models.WorkSession) {
 	line := strings.Repeat("-", 93)
-	fmt.Println(Green + line + Reset)
-	fmt.Printf(Green+"|  %-3s |  %-15s |  %-16s |  %-16s |  %-11s |  %-7s |\n"+Reset,
+	fmt.Println(green(line))
+	fmt.Printf(green("|  %-3s |  %-15s |  %-16s |  %-16s |  %-11s |  %-7s |\n"),
 		"ID", "Tag", "Start Time", "End Time", "Duration", "XP")
-	fmt.Println(Green + line + Reset)
+	fmt.Println(green(line))
 
 	for _, s := range sessions {
 		duration := s.EndTime.Sub(s.StartTime)
 		xp := app.calculateEarnedXP(duration)
 		fmt.Printf(
-			pipe+"  %-3d "+pipe+"  "+Yellow+"%-15s"+Reset+" "+pipe+"  %-16s "+pipe+"  %-16s "+pipe+"  "+Yellow+"%-11s"+Reset+" "+pipe+"  "+Red+"%-7d"+Reset+" "+pipe+"\n",
+			pipe+"  %-3d "+pipe+"  "+yellow(
+				"%-15s",
+			)+" "+pipe+"  %-16s "+pipe+"  %-16s "+pipe+"  "+yellow(
+				"%-11s",
+			)+" "+pipe+"  "+red(
+				"%-7d",
+			)+" "+pipe+"\n",
 			s.ID,
 			s.Tag,
 			s.StartTime.Format("2006-01-02 15:04"),
@@ -61,22 +67,28 @@ func (app *application) printWorkSessionsTable(sessions []*models.WorkSession) {
 			durationStr(duration),
 			xp,
 		)
-		fmt.Println(Green + line + Reset)
+		fmt.Println(green(line))
 	}
 }
 
 func (app *application) printFunSessionsTable(sessions []*models.FunSession) {
 	line := strings.Repeat("-", 93)
-	fmt.Println(Green + line + Reset)
-	fmt.Printf(Green+"|  %-3s |  %-15s |  %-16s |  %-16s |  %-11s |  %-7s |\n"+Reset,
+	fmt.Println(green(line))
+	fmt.Printf(green("|  %-3s |  %-15s |  %-16s |  %-16s |  %-11s |  %-7s |\n"),
 		"ID", "App", "Start Time", "End Time", "Duration", "XP")
-	fmt.Println(Green + line + Reset)
+	fmt.Println(green(line))
 
 	for _, s := range sessions {
 		duration := s.EndTime.Sub(s.StartTime)
 		xp := app.calculateSpentXP(duration)
 		fmt.Printf(
-			pipe+"  %-3d "+pipe+"  "+Yellow+"%-15s"+Reset+" "+pipe+"  %-16s "+pipe+"  %-16s "+pipe+"  "+Yellow+"%-11s"+Reset+" "+pipe+"  "+Red+"%-7d"+Reset+" "+pipe+"\n",
+			pipe+"  %-3d "+pipe+"  "+yellow(
+				"%-15s",
+			)+" "+pipe+"  %-16s "+pipe+"  %-16s "+pipe+"  "+yellow(
+				"%-11s",
+			)+" "+pipe+"  "+red(
+				"%-7d",
+			)+" "+pipe+"\n",
 			s.ID,
 			s.App,
 			s.StartTime.Format("2006-01-02 15:04"),
@@ -84,43 +96,53 @@ func (app *application) printFunSessionsTable(sessions []*models.FunSession) {
 			durationStr(duration),
 			xp,
 		)
-		fmt.Println(Green + line + Reset)
+		fmt.Println(green(line))
 	}
 }
 
 func (app *application) printWorkTagSummaries(summaries []*models.WorkTagSummary) {
 	line := strings.Repeat("-", 60)
-	fmt.Println(Green + line + Reset)
-	fmt.Printf(Green+"|  %-20s |  %-20s |  %-7s |\n"+Reset, "Tag", "Total Duration", "XP")
-	fmt.Println(Green + line + Reset)
+	fmt.Println(green(line))
+	fmt.Printf(green("|  %-20s |  %-20s |  %-7s |\n"), "Tag", "Total Duration", "XP")
+	fmt.Println(green(line))
 
 	for _, s := range summaries {
 		xp := app.calculateEarnedXP(s.Duration)
 		fmt.Printf(
-			pipe+"  "+Yellow+"%-20s"+Reset+" "+pipe+"  "+Yellow+"%-20s"+Reset+" "+pipe+"  "+Red+"%-7d"+Reset+" "+pipe+"\n",
+			pipe+"  "+yellow(
+				"%-20s",
+			)+" "+pipe+"  "+yellow(
+				"%-20s",
+			)+" "+pipe+"  "+red(
+				"%-7d",
+			)+" "+pipe+"\n",
 			s.Tag,
 			durationStr(s.Duration),
 			xp,
 		)
-		fmt.Println(Green + line + Reset)
+		fmt.Println(green(line))
 	}
 }
 
 func (app *application) printFunAppSummaries(summaries []*models.FunAppSummary) {
 	line := strings.Repeat("-", 60)
-	fmt.Println(Green + line + Reset)
-	fmt.Printf(Green+"|  %-20s |  %-20s |  %-7s |\n"+Reset, "App", "Total Duration", "XP")
-	fmt.Println(Green + line + Reset)
+	fmt.Println(green(line))
+	fmt.Printf(green("|  %-20s |  %-20s |  %-7s |\n"), "App", "Total Duration", "XP")
+	fmt.Println(green(line))
 
 	for _, s := range summaries {
 		xp := app.calculateEarnedXP(s.Duration)
 		fmt.Printf(
-			pipe+"  "+Yellow+"%-20s"+Reset+" "+pipe+"  "+Yellow+"%-20s"+Reset+" "+pipe+"  "+Red+"%-7d"+Reset+" "+pipe+"\n",
+			pipe+"  "+yellow(
+				"%-20s",
+			)+" "+pipe+"  "+yellow(
+				"%-20s",
+			)+" "+pipe+"  "+red("%-7d")+" "+pipe+"\n",
 			s.App,
 			durationStr(s.Duration),
 			xp,
 		)
-		fmt.Println(Green + line + Reset)
+		fmt.Println(green(line))
 	}
 }
 
@@ -131,4 +153,25 @@ func containApp(apps []*models.LockedApp, appName string) bool {
 		}
 	}
 	return false
+}
+
+func green(str string) string {
+	return Green + str + Reset
+}
+
+func yellow(str string) string {
+	return Yellow + str + Reset
+}
+
+func red(str string) string {
+	return Red + str + Reset
+}
+
+func xpToDuratoinStr(xp int64) string {
+	sign := ""
+	if xp < 0 {
+		sign = "-"
+		xp = xp * -1
+	}
+	return sign + durationStr(time.Duration(xp)*time.Second)
 }
