@@ -62,8 +62,8 @@ func (app *application) printWorkSessionsTable(sessions []*models.WorkSession) {
 			)+" "+pipe+"\n",
 			s.ID,
 			s.Tag,
-			s.StartTime.Format("2006-01-02 15:04"),
-			s.EndTime.Format("2006-01-02 15:04"),
+			s.StartTime.Format("02-01-2006 15:04"),
+			s.EndTime.Format("02-01-2006 15:04"),
 			durationStr(duration),
 			xp,
 		)
@@ -91,8 +91,8 @@ func (app *application) printFunSessionsTable(sessions []*models.FunSession) {
 			)+" "+pipe+"\n",
 			s.ID,
 			s.App,
-			s.StartTime.Format("2006-01-02 15:04"),
-			s.EndTime.Format("2006-01-02 15:04"),
+			s.StartTime.Format("02-01-2006 15:04"),
+			s.EndTime.Format("02-01-2006 15:04"),
 			durationStr(duration),
 			xp,
 		)
