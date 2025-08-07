@@ -157,16 +157,24 @@ func (app *application) printWeeklyWorkStats(stats map[time.Weekday]time.Duratio
 		time.Wednesday, time.Thursday, time.Friday, time.Saturday,
 	}
 
+	curDay := time.Now().Weekday()
 	for _, day := range days {
 		dur := stats[day]
 		durStr := durationStr(dur)
 		if dur == 0 {
 			durStr = "-"
 		}
+
+		marker := ""
+		if day == curDay {
+			marker += "◀ TODAY"
+		}
+
 		fmt.Printf(
-			pipe+"  "+yellow("%-16s")+" "+pipe+"  "+yellow("%-25s")+" "+pipe+"\n",
+			pipe+"  "+yellow("%-16s")+" "+pipe+"  "+yellow("%-17s")+green("%-7s")+"  "+pipe+"\n",
 			day.String(),
 			durStr,
+			marker,
 		)
 		fmt.Println(green(line))
 	}
