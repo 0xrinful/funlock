@@ -53,7 +53,7 @@ func (app *application) finishAction(c *cli.Context) error {
 	}
 
 	msg := fmt.Sprintf(
-		"%s✓ Finished session with tag [%s].%s\n%s⏱ Duration: %s → %d XP earned (%s of fun unlocked).%s",
+		"%s✓ Finished session with tag [%s].%s\n%s⏱ Duration: %s → %d XP earned (%s).%s",
 		Green,
 		session.Tag,
 		Reset,

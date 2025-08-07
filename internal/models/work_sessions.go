@@ -144,3 +144,39 @@ func (m WorkSessionModel) GetWorkTimeByTag(count int) ([]*WorkTagSummary, error)
 
 	return summaries, nil
 }
+
+func (m WorkSessionModel) GetWeeklyWorkStats() (map[time.Weekday]time.Duration, error) {
+	query := `
+		SELECT start_time, end_time FROM work_sessions
+		WHERE end_time != '0001-01-01 00:00:00' AND start_time >= ?`
+
+	now := time.Now()
+	startOfWeek := time.Date(
+		now.Year(),
+		now.Month(),
+		now.Day()-int(now.Weekday()),
+		0, 0, 0, 0,
+		now.Location(),
+	)
+
+	rows, err := m.DB.Query(query, startOfWeek.Format(time.RFC3339))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	result := make(map[time.Weekday]time.Duration)
+	for rows.Next() {
+		var startTime, endTime time.Time
+		if err := rows.Scan(&startTime, &endTime); err != nil {
+			return nil, err
+		}
+		duration := endTime.Sub(startTime)
+		day := startTime.Weekday()
+		result[day] += duration
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return result, nil
+}

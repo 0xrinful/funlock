@@ -146,6 +146,32 @@ func (app *application) printFunAppSummaries(summaries []*models.FunAppSummary) 
 	}
 }
 
+func (app *application) printWeeklyWorkStats(stats map[time.Weekday]time.Duration) {
+	line := strings.Repeat("-", 50)
+	fmt.Println(green(line))
+	fmt.Printf(green("|  %-16s |  %-25s |\n"), "Day", "Total Work Duration")
+	fmt.Println(green(line))
+
+	days := []time.Weekday{
+		time.Sunday, time.Monday, time.Tuesday,
+		time.Wednesday, time.Thursday, time.Friday, time.Saturday,
+	}
+
+	for _, day := range days {
+		dur := stats[day]
+		durStr := durationStr(dur)
+		if dur == 0 {
+			durStr = "-"
+		}
+		fmt.Printf(
+			pipe+"  "+yellow("%-16s")+" "+pipe+"  "+yellow("%-25s")+" "+pipe+"\n",
+			day.String(),
+			durStr,
+		)
+		fmt.Println(green(line))
+	}
+}
+
 func containApp(apps []*models.LockedApp, appName string) bool {
 	for _, app := range apps {
 		if app.Name == appName {

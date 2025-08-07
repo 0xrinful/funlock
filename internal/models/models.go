@@ -16,6 +16,7 @@ type Models struct {
 		GetLastN(count int) ([]*WorkSession, error)
 		TotalWorkDuration() (time.Duration, error)
 		GetWorkTimeByTag(count int) ([]*WorkTagSummary, error)
+		GetWeeklyWorkStats() (map[time.Weekday]time.Duration, error)
 	}
 	State interface {
 		Get() (*UserState, error)

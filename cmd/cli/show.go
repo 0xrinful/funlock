@@ -22,7 +22,7 @@ func (app *application) showAction(c *cli.Context) error {
 	if mode == "" {
 		return cli.Exit(
 			fmt.Sprintf(
-				"%sUsage: funlock show [fun|work|state|tags|apps] [count]%s\n%sError: show mode is required.%s",
+				"%sUsage: funlock show [fun|work|state|tags|apps|stats] [count]%s\n%sError: show mode is required.%s",
 				Yellow,
 				Reset,
 				Red,
@@ -93,6 +93,12 @@ func (app *application) showAction(c *cli.Context) error {
 			return fmt.Errorf("failed to fetch app summaries: %w", err)
 		}
 		app.printFunAppSummaries(appSummaries)
+	case "stats":
+		stats, err := app.models.WorkSessions.GetWeeklyWorkStats()
+		if err != nil {
+			return fmt.Errorf("failed to fetch week stats: %w", err)
+		}
+		app.printWeeklyWorkStats(stats)
 	default:
 		return cli.Exit(fmt.Sprintf("%sUnknown Mode type: %s%s\n", Red, mode, Reset), 1)
 	}
