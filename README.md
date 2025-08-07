@@ -61,7 +61,7 @@ funlock show <section> [count]
 ```
 
 - `count` is optional (default is `10`).
-- `section` must be one of: `work`, `fun`, `state`, `tags`, or `apps`.
+- `section` must be one of: `work`, `fun`, `state`, `tags`, `apps` or `stats`.
 
 #### Examples:
 
@@ -89,6 +89,11 @@ funlock show tags
 funlock show apps
 ```
 → Shows top 10 apps used in fun sessions, sorted by total usage time.
+
+```bash
+funlock show stats
+```
+→ Shows the total work duration for each day of the current week.
 
 ---
 
