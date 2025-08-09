@@ -52,9 +52,9 @@ func (m WorkSessionModel) GetByID(id int64) (*WorkSession, error) {
 func (m WorkSessionModel) FinishSession(id int64) error {
 	query := `
 		UPDATE work_sessions
-		SET end_time = CURRENT_TIMESTAMP
+		SET end_time = ?
 		WHERE id = ?`
-	_, err := m.DB.Exec(query, id)
+	_, err := m.DB.Exec(query, time.Now(), id)
 	return err
 }
 
