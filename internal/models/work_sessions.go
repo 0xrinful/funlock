@@ -159,7 +159,7 @@ func (m WorkSessionModel) GetWeeklyWorkStats() (map[time.Weekday]time.Duration, 
 		now.Location(),
 	)
 
-	rows, err := m.DB.Query(query, startOfWeek.Format(time.RFC3339))
+	rows, err := m.DB.Query(query, startOfWeek)
 	if err != nil {
 		return nil, err
 	}
