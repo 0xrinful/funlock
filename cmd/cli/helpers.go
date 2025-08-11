@@ -43,9 +43,9 @@ func (app *application) calculateSpentXP(duration time.Duration) int64 {
 }
 
 func (app *application) printWorkSessionsTable(sessions []*models.WorkSession) {
-	line := strings.Repeat("-", 93)
+	line := strings.Repeat("-", 100)
 	fmt.Println(green(line))
-	fmt.Printf(green("|  %-3s |  %-15s |  %-16s |  %-16s |  %-11s |  %-7s |\n"),
+	fmt.Printf(green("|  %-3s |  %-22s |  %-16s |  %-16s |  %-11s |  %-7s |\n"),
 		"ID", "Tag", "Start Time", "End Time", "Duration", "XP")
 	fmt.Println(green(line))
 
@@ -54,7 +54,7 @@ func (app *application) printWorkSessionsTable(sessions []*models.WorkSession) {
 		xp := app.calculateEarnedXP(duration)
 		fmt.Printf(
 			pipe+"  %-3d "+pipe+"  "+yellow(
-				"%-15s",
+				"%-22s",
 			)+" "+pipe+"  %-16s "+pipe+"  %-16s "+pipe+"  "+yellow(
 				"%-11s",
 			)+" "+pipe+"  "+red(
